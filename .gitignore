@@ -1,0 +1,19 @@
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# Node.js dependencies
+node_modules/
+
+# Logs
+*.log
+logs/
+error.log
+combined.log
+exceptions.log
+
+# Build artifacts
+dist/
+build/
