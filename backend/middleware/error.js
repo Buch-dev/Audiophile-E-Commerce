@@ -1,4 +1,4 @@
-import HandleError from "../utils/handleError";
+import HandleError from "../utils/handleError.js";
 
 export default (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;

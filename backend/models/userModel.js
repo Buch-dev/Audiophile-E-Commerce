@@ -54,16 +54,20 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Method to compare passwords
-userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
 // Method to generate JWT token
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
+};
+
+userSchema.methods.verifyPassword = async function (userEnteredPassword) {
+  return await bcrypt.compare(userEnteredPassword, this.password);
+};
+
+// Method to compare passwords
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // Method to generate reset password token
