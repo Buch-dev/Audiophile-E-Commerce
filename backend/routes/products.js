@@ -5,15 +5,19 @@ import {
   getAllProducts,
   updateProduct,
 } from "../controllers/productController.js";
+import { verifyUserAuth } from "../middleware/userAuth.js";
 
 const router = express.Router();
 
 // Get all products
-router.route("/").get(getAllProducts);
+router.route("/").get(verifyUserAuth, getAllProducts);
 // Create a new product
-router.route("/").post(createProduct);
+router.route("/").post(verifyUserAuth, createProduct);
 // Update and delete product by ID
-router.route("/:id").put(updateProduct).delete(deleteProduct);
+router
+  .route("/:id")
+  .put(verifyUserAuth, updateProduct)
+  .delete(verifyUserAuth, deleteProduct);
 
 // Add more routes (POST, PUT, DELETE) as needed
 
