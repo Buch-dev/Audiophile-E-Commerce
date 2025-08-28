@@ -5,19 +5,19 @@ import {
   getAllProducts,
   updateProduct,
 } from "../controllers/productController.js";
-import { verifyUserAuth } from "../middleware/userAuth.js";
+import { roleBasedAccess, verifyUserAuth } from "../middleware/userAuth.js";
 
 const router = express.Router();
 
 // Get all products
 router.route("/").get(verifyUserAuth, getAllProducts);
 // Create a new product
-router.route("/").post(verifyUserAuth, createProduct);
+router.route("/").post(verifyUserAuth, roleBasedAccess("admin"), createProduct);
 // Update and delete product by ID
 router
   .route("/:id")
-  .put(verifyUserAuth, updateProduct)
-  .delete(verifyUserAuth, deleteProduct);
+  .put(verifyUserAuth, roleBasedAccess("admin"), updateProduct)
+  .delete(verifyUserAuth, roleBasedAccess("admin"), deleteProduct);
 
 // Add more routes (POST, PUT, DELETE) as needed
 

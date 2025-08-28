@@ -12,24 +12,10 @@ export const getAllProducts = async (req, res) => {
 
 // Create a new Product
 export const createProduct = async (req, res) => {
-  const { name, price, description, image, category } = req.body;
-  try {
-    const newProduct = new Product({
-      name,
-      price,
-      description,
-      image,
-      category,
-    });
-    const savedProduct = await newProduct.save();
-    if (!newProduct) {
-      res.status(400).json({ error: "Product creation failed" });
-      return;
-    }
-    res.status(201).json(savedProduct);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  req.body.user = req.user.id;
+
+  const product = await Product.create(req.body);
+  res.status(201).json({ success: true, product });
 };
 
 // Update product

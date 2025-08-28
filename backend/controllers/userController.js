@@ -112,6 +112,7 @@ export const logoutUser = handleAsyncError(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
+    expire: new Date(Date.now()),
   });
 
   res.status(200).json({
