@@ -13,10 +13,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Product routes
-app.use("/api/products", productRoutes);
+app.use("/api/v1/products", productRoutes);
 
 // User routes
-app.use("/api/users", userRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // Error middleware (should be last)
 app.use(errorMiddleware);

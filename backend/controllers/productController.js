@@ -1,3 +1,4 @@
+import handleAsyncError from "../middleware/handleAsyncError.js";
 import Product from "../models/productModel.js";
 
 // Get all Products
@@ -54,3 +55,22 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Get Single Product
+export const getSingleProduct = handleAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  res.json(product);
+});
+
+// Admin - Get All Products
+export const getAdminProducts = handleAsyncError(async (req, res, next) => {
+  const products = await Product.find();
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});
