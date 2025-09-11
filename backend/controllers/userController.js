@@ -367,8 +367,6 @@ export const getAllUsers = handleAsyncError(async (req, res, next) => {
 // Get Single User (Admin only)
 export const getSingleUser = handleAsyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
-  console.log(req.params.id);
-  
 
   if (!user) {
     return next(new HandleError("User not found", 404));
