@@ -28,6 +28,8 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  stock: { type: Number, required: true, default: 1 },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const Product = mongoose.model("Product", productSchema);
