@@ -50,7 +50,7 @@ const Footer = () => {
             our demo facility - we’re open 7 days a week.
           </p>
           <p className="text-center text-white/50 font-bold text-[15px] mt-12 leading-[167%]">
-            Copyright 2025. All Rights Reserved
+            Copyright {new Date().getFullYear()}. All Rights Reserved
           </p>
         </div>
         <div className="flex items-center justify-between w-[104px]">
