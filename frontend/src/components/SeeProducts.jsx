@@ -1,7 +1,40 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const SeeProducts = () => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const blocks = sectionRef.current.querySelectorAll(".see-block");
+
+    gsap.fromTo(
+      blocks,
+      { opacity: 0, y: 80 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        stagger: 0.25,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  }, []);
+
   return (
-    <div className="grid grid-cols-1 gap-6 px-6 pb-[120px] md:px-10 md:pb-[88px] lg:px-[165px] lg:pb-0 lg:gap-12">
-      <div className="bg-[#D87D4A] flex flex-col items-center justify-center text-center px-6 py-[55px] rounded-lg md:py-0 md:pt-[52px] md:pb-16 bg-[url('/spiral.png')] bg-no-repeat bg-top bg-contain md:bg-[url('/spiral-tablet.png')] lg:flex-row lg:pb-0 lg:gap-[10%] lg:items-start lg:bg-[url('/spiral-desktop.png')] lg:bg-top-left overflow-hidden">
+    <div
+      ref={sectionRef}
+      className="grid grid-cols-1 gap-6 px-6 pb-[120px] md:px-10 md:pb-[88px] lg:px-[165px] lg:pb-0 lg:gap-12"
+    >
+      {/* ZX9 Speaker */}
+      <div className="see-block bg-[#D87D4A] flex flex-col items-center justify-center text-center px-6 py-[55px] rounded-lg md:py-0 md:pt-[52px] md:pb-16 bg-[url('/spiral.png')] bg-no-repeat bg-top bg-contain md:bg-[url('/spiral-tablet.png')] lg:flex-row lg:pb-0 lg:gap-[10%] lg:items-start lg:bg-[url('/spiral-desktop.png')] lg:bg-top-left overflow-hidden">
         <img
           src="/home/mobile/image-speaker-zx9.png"
           alt="speaker"
@@ -30,7 +63,9 @@ const SeeProducts = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col items-start justify-center text-center px-6 py-[101px] gap-8 rounded-lg bg-[url('/home/mobile/image-speaker-zx7.jpg')] bg-no-repeat bg-center bg-cover md:px-[62px] lg:items-start lg:text-left md:bg-[url('/home/tablet/image-speaker-zx7.jpg')] lg:bg-[url('/home/desktop/image-speaker-zx7.jpg')] lg:px-[95px]">
+
+      {/* ZX7 Speaker */}
+      <div className="see-block flex flex-col items-start justify-center text-center px-6 py-[101px] gap-8 rounded-lg bg-[url('/home/mobile/image-speaker-zx7.jpg')] bg-no-repeat bg-center bg-cover md:px-[62px] lg:items-start lg:text-left md:bg-[url('/home/tablet/image-speaker-zx7.jpg')] lg:bg-[url('/home/desktop/image-speaker-zx7.jpg')] lg:px-[95px]">
         <h1 className="text-black font-bold text-[28px] text-center leading-[40px] tracking-[1.29px]">
           ZX7 SPEAKER
         </h1>
@@ -38,7 +73,9 @@ const SeeProducts = () => {
           SEE PRODUCT
         </button>
       </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-[30px]">
+
+      {/* YX1 Earphones */}
+      <div className="see-block grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-[30px]">
         <div className="rounded-lg overflow-hidden">
           <img
             src="/home/mobile/image-earphones-yx1.jpg"

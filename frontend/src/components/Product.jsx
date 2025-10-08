@@ -1,7 +1,14 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ArrowIcon from "./ArrowIcon";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Product = () => {
+  const productRef = useRef(null);
+
   const menuItems = [
     {
       to: "/headphones",
@@ -25,20 +32,47 @@ const Product = () => {
       height: 104,
     },
   ];
+
+  useEffect(() => {
+    const elements = productRef.current.querySelectorAll(".product-card");
+
+    gsap.fromTo(
+      elements,
+      { opacity: 0, y: 80 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        stagger: 0.25,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: productRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  }, []);
+
   return (
-    <div className="px-6 pt-[94px] pb-[120px] md:px-10 md:pt-14 lg:px-[165px] lg:pb-[168px] lg:pt-[141px]">
+    <div
+      ref={productRef}
+      className="px-6 pt-[94px] pb-[120px] md:px-10 md:pt-14 lg:px-[165px] lg:pb-[168px] lg:pt-[141px]"
+    >
       <div className="flex flex-col items-center justify-center gap-[68px] md:gap-2.5 md:flex-row md:pt-14 lg:gap-[30px]">
         {menuItems.map(({ to, label, image, width, height }) => (
           <Link
             to={to}
             key={label}
-            className="w-full h-[165px] text-center bg-[#f1f1f1] border-b border-b-gray-300 hover:bg-gray-100 rounded-lg transition-colors duration-300"
+            className="product-card w-full h-[165px] text-center bg-[#f1f1f1] border-b border-b-gray-300 hover:bg-gray-100 rounded-lg transition-colors duration-300"
           >
             <div className="flex flex-col items-center relative">
               <img
                 src={`/${image}`}
                 alt={label}
-                className={`w-${width} h-${height} mx-auto mt-[-52px] mb-[38.5px] object-contain`}
+                className="mx-auto mt-[-52px] mb-[38.5px] object-contain"
+                width={width}
+                height={height}
                 style={{ zIndex: 2 }}
               />
               <div
