@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Product from "../components/Product";
 import SeepProducts from "../components/SeeProducts";
+import Location from "../components/Location";
 
 const Home = () => {
   /* const products = [
@@ -53,6 +54,7 @@ const Home = () => {
       <Header />
       <Product />
       <SeepProducts />
+      <Location />
       <Footer />
     </>
   );

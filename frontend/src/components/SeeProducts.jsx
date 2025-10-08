@@ -1,8 +1,6 @@
-import React from "react";
-
 const SeeProducts = () => {
   return (
-    <div className="grid grid-cols-1 gap-6 px-6 pb-[120px] md:px-10 md:pb-[88px] lg:px-[165px] lg:pb-[160px] lg:gap-12">
+    <div className="grid grid-cols-1 gap-6 px-6 pb-[120px] md:px-10 md:pb-[88px] lg:px-[165px] lg:pb-0 lg:gap-12">
       <div className="bg-[#D87D4A] flex flex-col items-center justify-center text-center px-6 py-[55px] rounded-lg md:py-0 md:pt-[52px] md:pb-16 bg-[url('/spiral.png')] bg-no-repeat bg-top bg-contain md:bg-[url('/spiral-tablet.png')] lg:flex-row lg:pb-0 lg:gap-[10%] lg:items-start lg:bg-[url('/spiral-desktop.png')] lg:bg-top-left overflow-hidden">
         <img
           src="/home/mobile/image-speaker-zx9.png"
