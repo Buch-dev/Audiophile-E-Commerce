@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Product from "../components/Product";
 import SeepProducts from "../components/SeeProducts";
 import Location from "../components/Location";
+import PageTitle from "../components/PageTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { getProduct } from "../features/products/productSlice";
 
 const Home = () => {
   /* const products = [
@@ -47,9 +50,17 @@ const Home = () => {
       createdAt: "2025-10-08T09:52:33.260Z",
     },
   ]; */
+  const { loading, error, products, productCounts } = useSelector((state) =>
+    state.product
+  );
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getProduct())
+  }, [dispatch])
   return (
     <>
+      <PageTitle title={"Home - AudioPhile"} />
       <Navbar />
       <Header />
       <Product />
