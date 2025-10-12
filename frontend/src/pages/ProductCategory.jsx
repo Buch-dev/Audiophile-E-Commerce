@@ -6,25 +6,26 @@ import Footer from "../components/footer";
 import ProductCard from "../components/ProductCard";
 import Location from "../components/Location";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct, removeErrors } from "../features/products/productSlice";
 import { toast } from "react-toastify";
-import ArrowIcon from "../components/ArrowIcon";
+import {
+  clearCategoryProducts,
+  getProductsByCategories,
+} from "../features/products/categorySlice";
 
 const ProductCategory = () => {
   const { category } = useParams();
 
-  const { loading, error, products, productCounts } = useSelector(
-    (state) => state.product
+  const { loading, error, products } = useSelector(
+    (state) => state.categoryProducts
   );
-
-  const filteredProducts = products.filter(
-    (prod) => prod.category === category
-  );
+  console.log(products);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getProduct());
-  }, [dispatch]);
+    if (category) {
+      dispatch(getProductsByCategories(category));
+    }
+  }, [dispatch, category]);
 
   useEffect(() => {
     if (error) {
@@ -32,7 +33,7 @@ const ProductCategory = () => {
         error.message || "An error occurred while fetching products.",
         { position: "bottom-right", autoClose: 3000 }
       );
-      dispatch(removeErrors());
+      dispatch(clearCategoryProducts());
     }
   }, [dispatch, error]);
 
@@ -54,16 +55,33 @@ const ProductCategory = () => {
     <>
       <PageTitle title={`Product Category - ${category.toUpperCase()}`} />
       <Navbar />
-      <div className="flex items-center justify-center text-amber-800">
-        {filteredProducts.map((prod) => (
-          <Link to={`/product/${prod._id}`} key={prod._id}>
-            {prod.name}
-          </Link>
-        ))}
+      <div className="flex items-center justify-center">
+        {products.length === 0 ? (
+          <span className="text-lg font-bold text-gray-600">
+            No products found in this category.
+          </span>
+        ) : (
+          <div className="text-center my-8">
+            <h1 className="text-lg font-bold text-gray-600">
+              {products.length} products found.
+            </h1>
+            <h2 className="text-md font-semibold text-gray-500">
+              Showing results for "{category}"
+            </h2>
+            {products.map((prod) => (
+              <div key={prod._id} className="mt-4">
+                <h3 className="font-bold">{prod.name}</h3>
+              </div>
+            ))}
+          </div>)}
       </div>
-      <ProductCard />
-      <Location />
-      <Footer />
+      {products.length > 0 && (
+        <>
+          <ProductCard />
+          <Location />
+          <Footer />
+        </>
+      )}
     </>
   );
 };

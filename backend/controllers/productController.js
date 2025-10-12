@@ -15,15 +15,36 @@ export const getAllProducts = handleAsyncError(async (req, res, next) => {
 });
 
 // Get all unique categories from products
-export const getAllProductCategories = handleAsyncError(async (req, res, next) => {
-  const categories = await Product.distinct("category");
+export const getAllProductCategories = handleAsyncError(
+  async (req, res, next) => {
+    const categories = await Product.distinct("category");
 
-  return res.status(200).json({
-    success: true,
-    count: categories.length,
-    categories,
-  });
-});
+    return res.status(200).json({
+      success: true,
+      count: categories.length,
+      categories,
+    });
+  }
+);
+
+// Get Products by category
+export const getProductsByCategory = handleAsyncError(
+  async (req, res, next) => {
+    const { category } = req.params;
+
+    const products = await Product.find({ category });
+
+    if (products.length === 0 || !products) {
+      return next(new HandleError("Product Category not found", 404));
+    }
+
+    return res.status(200).json({
+      success: true,
+      count: products.length,
+      products,
+    });
+  }
+);
 
 // Create a new Product
 export const createProduct = handleAsyncError(async (req, res, next) => {

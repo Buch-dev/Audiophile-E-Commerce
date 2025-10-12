@@ -6,9 +6,17 @@ import ArrowIcon from "./ArrowIcon";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Product = ({ products = [], productCounts }) => {
+const Product = ({ products = [], productCounts, category }) => {
   const productRef = useRef(null);
 
+  console.log(products.length);
+  
+  
+  if (products && products.length > 0) {
+    products.forEach((prod) => {
+      console.log(prod.category);
+    });
+  }
   useEffect(() => {
     const elements = productRef.current.querySelectorAll(".product-card");
 
@@ -104,14 +112,18 @@ const Product = ({ products = [], productCounts }) => {
     );
   }
 
-  // Render fetched products
+  // Filter products by category if provided
+  const filteredProducts = category
+    ? products.filter((prod) => prod.category?.toLowerCase() === category.toLowerCase())
+    : products;
+
   return (
     <div
       ref={productRef}
       className="px-6 pt-[94px] pb-[120px] md:px-10 md:pt-14 lg:px-[165px] lg:pb-[168px] lg:pt-[141px]"
     >
       <div className="flex flex-col items-center justify-center gap-[68px] md:gap-2.5 md:flex-row md:pt-14 lg:gap-[30px]">
-        {products.map((prod) => (
+        {filteredProducts.map((prod) => (
           <Link
             to={`/product/${prod._id}`}
             key={prod._id}

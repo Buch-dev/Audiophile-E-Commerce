@@ -11,6 +11,7 @@ import {
   updateProduct,
   deleteReview,
   getAllProductCategories,
+  getProductsByCategory,
 } from "../controllers/productController.js";
 import { roleBasedAccess, verifyUserAuth } from "../middleware/userAuth.js";
 
@@ -18,6 +19,8 @@ const router = express.Router();
 
 // Get Products Categories
 router.route("/categories").get(getAllProductCategories);
+// Get Products by Category
+router.route("/category/:category").get(getProductsByCategory);
 
 // Public routes
 router.route("/").get(getAllProducts);
