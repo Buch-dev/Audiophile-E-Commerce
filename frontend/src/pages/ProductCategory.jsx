@@ -1,21 +1,25 @@
 import React, { useEffect } from "react";
-import Footer from "../components/footer";
-import Navbar from "../components/Navbar";
-import Header from "../components/Header";
-import Product from "../components/Product";
-import SeepProducts from "../components/SeeProducts";
-import Location from "../components/Location";
+import { Link, useParams } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
+import Navbar from "../components/Navbar";
+import Footer from "../components/footer";
+import ProductCard from "../components/ProductCard";
+import Location from "../components/Location";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct, removeErrors } from "../features/products/productSlice";
 import { toast } from "react-toastify";
-import ProductCard from "../components/ProductCard";
+import ArrowIcon from "../components/ArrowIcon";
 
-const Home = () => {
+const ProductCategory = () => {
+  const { category } = useParams();
+
   const { loading, error, products, productCounts } = useSelector(
     (state) => state.product
   );
-  
+
+  const filteredProducts = products.filter(
+    (prod) => prod.category === category
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -48,16 +52,20 @@ const Home = () => {
 
   return (
     <>
-      <PageTitle title={"Home - AudioPhile"} />
+      <PageTitle title={`Product Category - ${category.toUpperCase()}`} />
       <Navbar />
-      <Header />
-      <ProductCard products={products} productCounts={productCounts} />
-      {/* <Product products={products} productCounts={productCounts} /> */}
-      <SeepProducts />
+      <div className="flex items-center justify-center text-amber-800">
+        {filteredProducts.map((prod) => (
+          <Link to={`/product/${prod._id}`} key={prod._id}>
+            {prod.name}
+          </Link>
+        ))}
+      </div>
+      <ProductCard />
       <Location />
       <Footer />
     </>
   );
 };
 
-export default Home;
+export default ProductCategory;

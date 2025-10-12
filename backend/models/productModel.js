@@ -28,6 +28,7 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  category: { type: String, required: true },
   stock: { type: Number, required: true, default: 1 },
   createdAt: { type: Date, default: Date.now },
 });
