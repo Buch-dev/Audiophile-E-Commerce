@@ -67,7 +67,7 @@ const ProductCategory = () => {
             No products found in this category.
           </span>
         ) : (
-          <div className="text-center w-full px-6 flex flex-col items-center justify-center gap-[120px] mt-16 mb-24">
+          <div className="text-center w-full px-6 flex flex-col items-center justify-center gap-[120px] mt-16 mb-24 md:gap-[120px] md:px-10 lg:px-[165px] lg:gap-[160px]">
             {products.map((prod, idx) => (
               <div
                 key={prod._id}
@@ -76,7 +76,17 @@ const ProductCategory = () => {
                 <img
                   src={prod.image_mobile}
                   alt={prod.name}
-                  className="rounded-lg"
+                  className="rounded-lg md:hidden"
+                />
+                <img
+                  src={prod.image_tablet}
+                  alt={prod.name}
+                  className="hidden md:block rounded-lg lg:hidden"
+                />
+                <img
+                  src={prod.image_desktop}
+                  alt={prod.name}
+                  className="hidden lg:block rounded-lg"
                 />
                 <div className="flex flex-col items-center justify-center gap-6">
                   {idx === 0 && (
@@ -84,10 +94,10 @@ const ProductCategory = () => {
                       NEW PRODUCT
                     </p>
                   )}
-                  <h3 className="font-bold uppercase text-[28px] tracking-[1px]">
+                  <h3 className="font-bold uppercase text-[28px] tracking-[1px] md:text-[40px] md:tracking-[1.43px] md:leading-[44px] lg:leading-[58px] lg:text-[56px]">
                     {prod.name} <br /> {category}
                   </h3>
-                  <p className="text-[15px] font-medium leading-[25px] text-black/50">
+                  <p className="text-[15px] font-medium leading-[25px] text-black/50 md:w-[572px] lg:w-[445px]">
                     {prod.description}
                   </p>
                   <Link to={`/product/${prod._id}`}>
