@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import Navbar from "../components/Navbar";
@@ -12,16 +12,24 @@ import {
   getProductsByCategories,
 } from "../features/products/categorySlice";
 import Button from "../components/Button";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ProductCategory = () => {
   const { category } = useParams();
-
   const { loading, error, products } = useSelector(
     (state) => state.categoryProducts
   );
-  console.log(products);
 
   const dispatch = useDispatch();
+
+  // Refs for animation targets
+  const containerRef = useRef(null);
+  const titleRef = useRef(null);
+  const productRefs = useRef([]);
+
   useEffect(() => {
     if (category) {
       dispatch(getProductsByCategories(category));
@@ -37,6 +45,42 @@ const ProductCategory = () => {
       dispatch(clearCategoryProducts());
     }
   }, [dispatch, error]);
+
+  // GSAP Animations
+  useEffect(() => {
+    if (products.length > 0) {
+      // Fade in container
+      gsap.from(containerRef.current, {
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+
+      // Slide-up category title
+      gsap.from(titleRef.current, {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: 0.2,
+      });
+
+      // Animate each product section
+      productRefs.current.forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%",
+          },
+          opacity: 0,
+          y: 60,
+          x: i % 2 === 0 ? -50 : 50,
+          duration: 1,
+          ease: "power3.out",
+        });
+      });
+    }
+  }, [products]);
 
   if (loading) {
     return (
@@ -56,14 +100,18 @@ const ProductCategory = () => {
     <>
       <PageTitle title={`Product Category - ${category.toUpperCase()}`} />
       <Navbar />
-      <div className="flex flex-col items-center justify-center">
-        <div className="bg-black py-8 flex items-center justify-center w-full">
+      <div ref={containerRef} className="flex flex-col items-center justify-center">
+        <div
+          ref={titleRef}
+          className="bg-black py-8 flex items-center justify-center w-full"
+        >
           <h1 className="text-white font-bold text-[28px] tracking-[2px] uppercase">
             {category}
           </h1>
         </div>
+
         {products.length === 0 ? (
-          <span className="text-lg font-bold text-gray-600">
+          <span className="text-lg font-bold text-gray-600 mt-12">
             No products found in this category.
           </span>
         ) : (
@@ -71,7 +119,10 @@ const ProductCategory = () => {
             {products.map((prod, idx) => (
               <div
                 key={prod._id}
-                className="flex flex-col items-center justify-center gap-8 lg:flex-row lg:justify-between lg:gap-[125px]"
+                ref={(el) => (productRefs.current[idx] = el)}
+                className={`flex flex-col items-center justify-center gap-8 lg:flex-row lg:justify-between lg:gap-[10%] ${
+                  parseInt(idx) % 2 !== 0 ? "lg:flex-row-reverse" : ""
+                }`}
               >
                 <img
                   src={prod.image_mobile}
@@ -86,7 +137,7 @@ const ProductCategory = () => {
                 <img
                   src={prod.image_desktop}
                   alt={prod.name}
-                  className="hidden lg:block rounded-lg w-1/2"
+                  className="hidden lg:block rounded-lg w-[45%]"
                 />
                 <div className="flex flex-col items-center justify-center gap-6 lg:items-start">
                   {idx === 0 && (
@@ -109,11 +160,30 @@ const ProductCategory = () => {
           </div>
         )}
       </div>
+
       {products.length > 0 && (
         <>
-          <ProductCard />
-          <Location />
-          <Footer />
+          {/* Fade-in footer sections */}
+          <div
+            className="opacity-0"
+            ref={(el) => {
+              if (el) {
+                gsap.to(el, {
+                  scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                  },
+                  opacity: 1,
+                  duration: 1,
+                  ease: "power2.out",
+                });
+              }
+            }}
+          >
+            <ProductCard />
+            <Location />
+            <Footer />
+          </div>
         </>
       )}
     </>
