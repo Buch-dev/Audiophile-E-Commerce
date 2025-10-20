@@ -62,7 +62,7 @@ export const createProduct = handleAsyncError(async (req, res, next) => {
 // Update product
 export const updateProduct = handleAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const { name, price, description, image, category } = req.body;
+  const { name, price, description, image, category, version, features_I, features_II, in_the_box } = req.body;
 
   // Validate ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -71,7 +71,7 @@ export const updateProduct = handleAsyncError(async (req, res, next) => {
 
   const updatedProduct = await Product.findByIdAndUpdate(
     id,
-    { name, price, description, image, category },
+    { name, price, description, image, category, version, features_I, features_II, in_the_box },
     { new: true, runValidators: true }
   );
 
